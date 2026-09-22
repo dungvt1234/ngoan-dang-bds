@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
@@ -10,7 +11,18 @@ export function HomeAbout() {
       <div className="section-pad">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <Reveal className="lg:col-span-2">
+            <Reveal>
+            <div className="relative aspect-[4/5] max-w-[360px] overflow-hidden rounded-2xl">
+              <Image
+                src="/images/ngoandang.jmg.jpg"
+                alt="Ngoan Đặng — BĐS dự án Vũng Tàu"
+                fill
+                sizes="(max-width: 1024px) 100vw, 360px"
+                className="object-cover"
+              />
+            </div>
+            </Reveal>
+            <Reveal className="lg:col-span-1" delay={100}>
             <div>
               <p className="type-kicker text-secondary mb-4">Về Ngoan</p>
               <h2 id="home-about-heading" className="font-display text-primary font-semibold text-[2rem] md:text-[2.75rem] leading-tight mb-6">
