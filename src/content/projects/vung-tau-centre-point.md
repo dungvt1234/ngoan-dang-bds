@@ -9,6 +9,7 @@ cover: /images/stock-bds-apartment.jpg
 cover_alt: "Tòa căn hộ minh họa (ảnh tạm — không phải ảnh dự án)"
 tags: [vung-tau, de-o, gia]
 noindex: true
+featured: true
 author: ngoan-dang
 published_at: 2026-09-21
 updated_at: 2026-09-21

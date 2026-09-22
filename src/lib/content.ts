@@ -234,6 +234,7 @@ async function parseProjectFile(file: string, raw: string): Promise<Project> {
     tags,
     // noindex là SEO decision riêng — Tier KHÔNG tự quyết định (spec H).
     noindex: d.noindex === true,
+    featured: d.featured === true,
     overview: optionalString(d.overview),
     location_text: optionalString(d.location_text),
     location_landmarks: Array.isArray(d.location_landmarks)
@@ -515,16 +516,21 @@ export const getProjectBySlug = cache(async (slug: string): Promise<Project | un
   (await loadStore()).projects.find((p) => p.slug === slug)
 );
 
-// Featured cho homepage: project live (noindex !== true), tối đa limit.
-// Không ranking, không "top/best" — chỉ lấy theo thứ tự store (Tier A trước).
-// Fallback demo: khi chưa có project live nào (V1 demo-only), trả về demo
-// để test pipeline end-to-end. Tên demo đã ghi rõ "DỮ LIỆU MẪU".
-// Khi content thật lên, nhánh live thắng tự động.
-export const getFeaturedProjects = cache(async (limit = 3): Promise<Project[]> => {
+// Featured cho homepage: ưu tiên featured=true, rồi Tier, rồi mới nhất.
+// Bỏ qua slug demo- khi đã có dự án thật; chỉ dùng demo khi chưa có gì.
+export const getFeaturedProjects = cache(async (limit = 4): Promise<Project[]> => {
   const { projects } = await loadStore();
-  const live = projects.filter((p) => !p.noindex).slice(0, limit);
-  if (live.length > 0) return live;
-  return projects.slice(0, limit);
+  const real = projects.filter((p) => !p.slug.startsWith("demo-"));
+  const pool = real.length > 0 ? real : projects;
+  const tierRank: Record<ProjectTier, number> = { A: 0, B: 1, C: 2 };
+  return [...pool]
+    .sort(
+      (a, b) =>
+        Number(b.featured ?? false) - Number(a.featured ?? false) ||
+        tierRank[a.tier] - tierRank[b.tier] ||
+        b.updated_at.localeCompare(a.updated_at)
+    )
+    .slice(0, limit);
 });
 
 export const getAllArticles = cache(async (): Promise<Article[]> => (await loadStore()).articles);

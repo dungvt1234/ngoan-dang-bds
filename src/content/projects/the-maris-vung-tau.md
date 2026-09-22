@@ -9,6 +9,7 @@ cover: /images/stock-bds-villa.jpg
 cover_alt: "Biệt thự nghỉ dưỡng minh họa (ảnh tạm — không phải ảnh dự án)"
 tags: [vung-tau, nghi-duong, gia]
 noindex: true
+featured: true
 author: ngoan-dang
 published_at: 2026-09-21
 updated_at: 2026-09-21

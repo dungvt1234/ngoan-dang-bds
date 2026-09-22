@@ -9,6 +9,7 @@ cover: /images/stock-vungtau-panorama.jpg
 cover_alt: "Toàn cảnh Vũng Tàu minh họa (ảnh tạm)"
 tags: [vung-tau, dau-tu, tien-do]
 noindex: true
+featured: true
 author: ngoan-dang
 published_at: 2026-09-21
 updated_at: 2026-09-21

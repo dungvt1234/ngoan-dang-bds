@@ -16,7 +16,7 @@ export function ContactTemplate() {
           <SectionHeading
             kicker="Liên hệ"
             title="Nói chuyện với Ngoan"
-            lede="Kênh liên hệ + form placeholder — handler ở phase sau."
+            lede="Điền form — tin nhắn chuyển thẳng tới Zalo Ngoan."
           />
           </Reveal>
         </div>
