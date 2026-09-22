@@ -3,11 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Project } from "@/types/content";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const SEGMENT_LABELS: Record<Project["segment"], string> = {
   "nghi-duong": "Nghỉ dưỡng",
@@ -21,199 +17,163 @@ const STATUS_LABELS: Record<Project["status"], string> = {
   "da-ban-giao": "Đã bàn giao",
 };
 
-// Portfolio traverse kiểu cinematic-estate: pin + scrub ngang (desktop),
-// snap-scroll mobile. Data từ loader, card light theo style hiện tại.
+// Traverse KHÔNG dùng GSAP pin (từng gây kẹt scroll + treo tab):
+// section cao hơn viewport, khối sticky, translateX tính tay từ scrollY.
+// Native scroll event + rAF, cleanup sạch, reduced-motion tắt hẳn.
 export function PropertyGrid({ projects }: { projects: Project[] }) {
-  const rootRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const root = rootRef.current;
+    const section = sectionRef.current;
     const track = trackRef.current;
-    if (!root || !track) return;
+    if (!section || !track) return;
+    if (window.matchMedia("(min-width: 768px)").matches === false) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const mm = gsap.matchMedia();
-
-    mm.add("(min-width: 768px)", () => {
-      const getAmount = () =>
-        Math.max(0, track.scrollWidth - window.innerWidth + 120);
-      // TẠM TẮT PIN để chẩn đoán treo tab khi chuyển trang (debug 09/2026).
-      // Nếu hết sập → thủ phạm là pin → dựng lại pin kiểu an toàn.
-      const PIN_ENABLED = false;
-      if (!PIN_ENABLED) return;
-
-      const pinRange = () => ({
-        trigger: root,
-        start: "top top",
-        // Kéo dài quãng ghim gấp ~3.2 lần để vuốt hết card mới nhả,
-        // tránh cảm giác nhạy/cuộn lướt qua.
-        end: () => `+=${getAmount() * 3.2}`,
-      });
-
-      const tween = gsap.to(track, {
-        x: () => -getAmount(),
-        ease: "none",
-        scrollTrigger: {
-          ...pinRange(),
-          pin: true,
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            const total = track.children.length;
-            const idx = Math.max(
-              0,
-              Math.min(total - 1, Math.round(self.progress * (total - 1)))
-            );
-            setActive(idx);
-          },
-        },
-      });
-
-      const cards = Array.from(
-        track.querySelectorAll<HTMLElement>(".deck-card")
-      );
-
-      // Tilt hiện rõ suốt traverse, không mờ: card nghiêng mạnh lúc vào,
-      // duỗi thẳng dần theo tiến trình pin.
-      gsap.set(cards, {
-        opacity: 1,
-        rotateY: 32,
-        rotateX: 10,
-        y: 60,
-        transformOrigin: "left center",
-      });
-      const straighten = gsap.to(cards, {
-        opacity: 1,
-        rotateY: 0,
-        rotateX: 0,
-        y: 0,
-        ease: "none",
-        stagger: 0.12,
-        scrollTrigger: {
-          ...pinRange(),
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      return () => {
-        straighten.scrollTrigger?.kill();
-        straighten.kill();
-        tween.scrollTrigger?.kill();
-        tween.kill();
-      };
-    });
-
-    // Đo lại vị trí ghim sau khi font/ảnh load xong (layout shift làm pin
-    // kích hoạt sớm sai chỗ). Có guard mounted + once để không refresh
-    // giữa lúc chuyển trang (từng gây treo tab).
-    let mounted = true;
-    const refresh = () => {
-      if (mounted) ScrollTrigger.refresh();
+    const measure = () => {
+      const max = Math.max(0, track.scrollWidth - window.innerWidth + 120);
+      // Section cao = 1 viewport + quãng chạy (giới hạn để không quá dài).
+      section.style.height = `calc(100vh + ${Math.min(max * 1.6, 2600)}px)`;
+      return max;
     };
-    if (document.readyState === "complete") {
-      refresh();
-    } else {
-      window.addEventListener("load", refresh, { once: true });
-    }
-    if (document.fonts) {
-      document.fonts.ready.then(refresh).catch(() => {});
-    }
 
+    let max = measure();
+    let raf = 0;
+    let lastIdx = -1;
+
+    const update = () => {
+      raf = 0;
+      const rect = section.getBoundingClientRect();
+      const total = section.offsetHeight - window.innerHeight;
+      const progress = Math.max(0, Math.min(1, -rect.top / Math.max(1, total)));
+      const x = progress * max;
+      track.style.transform = `translate3d(${-x}px, 0, 0)`;
+
+      // Tilt nền (card luôn nghiêng rõ như bản gốc) + tilt vị trí
+      // (giữa thẳng, hai bên nghiêng). Tilt nền mờ dần theo tiến trình.
+      const cx = window.innerWidth / 2;
+      const cards = track.children;
+      const baseTilt = (1 - progress) * 22;
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i] as HTMLElement;
+        const r = card.getBoundingClientRect();
+        const offset = (r.left + r.width / 2 - cx) / window.innerWidth;
+        const clamped = Math.max(-0.5, Math.min(0.5, offset));
+        card.style.transform = `perspective(1400px) rotateY(${(clamped * -28 - baseTilt).toFixed(2)}deg) rotateX(4deg)`;
+      }
+
+      const idx = Math.max(
+        0,
+        Math.min(cards.length - 1, Math.round(progress * (cards.length - 1)))
+      );
+      // Chỉ render lại khi đổi card — tránh re-render mỗi frame gây giật.
+      if (idx !== lastIdx) {
+        lastIdx = idx;
+        setActive(idx);
+      }
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    const onResize = () => {
+      max = measure();
+      update();
+    };
+
+    max = measure();
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
     return () => {
-      mounted = false;
-      window.removeEventListener("load", refresh);
-      mm.revert();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [projects]);
 
   return (
     <section
-      ref={rootRef}
+      ref={sectionRef}
       aria-labelledby="portfolio-heading"
-      className="relative bg-clean py-24 md:py-0 px-6 md:px-12 lg:px-16"
+      className="relative bg-clean"
     >
-      {/* Section Header (inside pinned area on desktop) */}
-      <div className="mb-12 md:mb-0 md:absolute md:top-10 md:left-12 lg:left-16 md:right-12 lg:right-16 z-20 pr-4 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <div className="max-w-none">
-          <p className="type-kicker text-secondary mb-4">Dự án nổi bật</p>
-          <h2 id="portfolio-heading" className="font-display text-primary font-semibold text-[1.65rem] md:text-[2.5rem] md:whitespace-nowrap leading-tight">
-            Những dự án đang được quan tâm
-          </h2>
-        </div>
-        <Link
-          href="/du-an"
-          className="type-small font-medium text-primary underline decoration-accent decoration-2 underline-offset-8 hover:text-accent-hover transition-colors shrink-0"
-        >
-          Xem tất cả dự án →
-        </Link>
-      </div>
-
-      {/* 3D stage */}
-      <div className="deck-stage pointer-events-none [perspective:1400px] mt-8 md:mt-0 md:h-screen md:flex md:items-center">
-        <div
-          ref={trackRef}
-          data-lenis-prevent
-          className="deck-track pointer-events-auto flex gap-6 md:gap-8 md:will-change-transform overflow-x-auto md:overflow-visible snap-x touch-[pan-x_pan-y]"
-          style={{ transformStyle: "preserve-3d" }}
-        >
-          {projects.slice(0, 6).map((p, i) => (
-            <Link
-              key={p.slug}
-              href={`/du-an/${p.slug}`}
-              className={`deck-card pointer-events-auto w-[78vw] sm:w-[400px] md:w-[400px] shrink-0 snap-center group bg-page rounded-2xl overflow-hidden border border-soft hover:shadow-xl transition-shadow ${
-                i === 0 ? "md:ml-[30vw]" : ""
-              }`}
-              style={{ transformStyle: "preserve-3d", flex: "0 0 auto" }}
-            >
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <Image
-                  src={p.cover}
-                  alt={p.cover_alt}
-                  fill
-                  sizes="(max-width: 768px) 78vw, 400px"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-5">
-                <div className="flex gap-2 mb-3">
-                  <span className="type-caption font-medium text-accent-hover uppercase tracking-wider">
-                    {SEGMENT_LABELS[p.segment]}
-                  </span>
-                  <span className="type-caption text-muted">· {STATUS_LABELS[p.status]}</span>
-                </div>
-                <h3 className="font-medium text-primary text-lg leading-snug mb-1 group-hover:text-accent-hover transition-colors">
-                  {p.name}
-                </h3>
-                <p className="type-small text-secondary">{p.location_label}</p>
-              </div>
-            </Link>
-          ))}
-
-          {/* End card */}
+      <div className="md:sticky md:top-0 md:h-screen flex flex-col justify-center py-24 md:py-0 px-6 md:px-12 lg:px-16 overflow-hidden">
+        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:px-0 max-w-none">
+          <div>
+            <p className="type-kicker text-secondary mb-4">Dự án nổi bật</p>
+            <h2 id="portfolio-heading" className="font-display text-primary font-semibold text-[1.65rem] md:text-[2.5rem] md:whitespace-nowrap leading-tight">
+              Những dự án đang được quan tâm
+            </h2>
+          </div>
           <Link
             href="/du-an"
-            className="deck-card pointer-events-auto w-[60vw] sm:w-[320px] shrink-0 snap-center flex items-center justify-center rounded-2xl bg-ink text-ondark group"
+            className="type-small font-medium text-primary underline decoration-accent decoration-2 underline-offset-8 hover:text-accent-hover transition-colors shrink-0"
           >
-            <div className="text-center p-8">
-              <p className="text-accent text-sm tracking-widest uppercase mb-3">Xem tất cả</p>
-              <h3 className="font-display text-3xl leading-tight mb-4">
-                Mọi phân tích
-                <br />
-                dự án
-              </h3>
-              <span className="inline-block border-b border-white/40 pb-0.5 group-hover:border-accent transition-colors duration-300">
-                Khám phá →
-              </span>
-            </div>
+            Xem tất cả dự án →
           </Link>
         </div>
 
-        {/* HUD counter */}
-        <div className="deck-hud absolute bottom-6 right-6 md:right-12 lg:right-16 z-20 hidden md:flex items-baseline gap-2">
+        <div className="mt-8 md:mt-10">
+          <div
+            ref={trackRef}
+            data-lenis-prevent
+            className="flex gap-6 md:gap-8 overflow-x-auto md:overflow-visible snap-x touch-[pan-x_pan-y] will-change-transform"
+          >
+            {projects.slice(0, 6).map((p) => (
+              <Link
+                key={p.slug}
+                href={`/du-an/${p.slug}`}
+                className="deck-card pointer-events-auto w-[78vw] sm:w-[400px] md:w-[400px] shrink-0 snap-center group bg-page rounded-2xl overflow-hidden border border-soft hover:shadow-xl transition-shadow"
+                style={{ flex: "0 0 auto" }}
+              >
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={p.cover}
+                    alt={p.cover_alt}
+                    fill
+                    sizes="(max-width: 768px) 78vw, 400px"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-5">
+                  <div className="flex gap-2 mb-3">
+                    <span className="type-caption font-medium text-accent-hover uppercase tracking-wider">
+                      {SEGMENT_LABELS[p.segment]}
+                    </span>
+                    <span className="type-caption text-muted">· {STATUS_LABELS[p.status]}</span>
+                  </div>
+                  <h3 className="font-medium text-primary text-lg leading-snug mb-1 group-hover:text-accent-hover transition-colors">
+                    {p.name}
+                  </h3>
+                  <p className="type-small text-secondary">{p.location_label}</p>
+                </div>
+              </Link>
+            ))}
+
+            <Link
+              href="/du-an"
+              className="deck-card pointer-events-auto w-[60vw] sm:w-[320px] shrink-0 snap-center flex items-center justify-center rounded-2xl bg-ink text-ondark group"
+            >
+              <div className="text-center p-8">
+                <p className="text-accent text-sm tracking-widest uppercase mb-3">Xem tất cả</p>
+                <h3 className="font-display text-3xl leading-tight mb-4">
+                  Mọi phân tích
+                  <br />
+                  dự án
+                </h3>
+                <span className="inline-block border-b border-white/40 pb-0.5 group-hover:border-accent transition-colors duration-300">
+                  Khám phá →
+                </span>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        <div className="hidden md:flex items-baseline gap-2 mt-8 text-primary/60">
           <span className="font-display text-lg tracking-[0.2em] text-primary">
             {String(active + 1).padStart(2, "0")}
           </span>
@@ -222,10 +182,9 @@ export function PropertyGrid({ projects }: { projects: Project[] }) {
             {String(Math.min(projects.length, 6) + 1).padStart(2, "0")}
           </span>
         </div>
-      </div>
-
-      <div className="md:hidden flex items-center gap-2 text-secondary text-[11px] mt-4 tracking-widest uppercase">
-        Vuốt để khám phá
+        <div className="md:hidden flex items-center gap-2 text-secondary text-[11px] mt-4 tracking-widest uppercase">
+          Vuốt để khám phá
+        </div>
       </div>
     </section>
   );

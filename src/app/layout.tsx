@@ -30,6 +30,7 @@ export const metadata: Metadata = {
   title: "Ngoan Đặng — BĐS dự án Vũng Tàu",
   description:
     "Ngoan Đặng — thông tin và phân tích độc lập về căn hộ nghỉ dưỡng, căn hộ để ở và khu đô thị tại Vũng Tàu.",
+  icons: { icon: "/images/logo.jpg" },
 };
 
 export default function RootLayout({

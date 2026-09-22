@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { navLinks } from "@/lib/data";
@@ -11,10 +12,16 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
           {/* Brand */}
           <div className="md:col-span-1">
-            <p className="font-display text-xl font-semibold tracking-tight">
-              Ngoan Đặng
-            </p>
-            <p className="text-[11px] tracking-[0.18em] uppercase text-ondark/60 mt-1 mb-6">
+            <div className="relative h-14 w-auto max-w-[220px] mb-6">
+              <Image
+                src="/images/logo.jpg"
+                alt="Ngoan Đặng — Real Estate Analyst"
+                fill
+                sizes="220px"
+                className="object-contain object-left"
+              />
+            </div>
+            <p className="text-[11px] tracking-[0.18em] uppercase text-ondark/60 mb-6">
               BĐS dự án Vũng Tàu
             </p>
             <p className="text-ondark/60 text-sm leading-relaxed max-w-xs">
