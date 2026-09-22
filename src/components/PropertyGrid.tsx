@@ -101,13 +101,9 @@ export function PropertyGrid({ projects }: { projects: Project[] }) {
       };
     });
 
-    // Ảnh load sau làm track dài ra → đo lại để card cuối không bị cắt.
-    const onLoad = () => ScrollTrigger.refresh();
-    if (document.readyState === "complete") onLoad();
-    else window.addEventListener("load", onLoad);
-
+    // KHÔNG refresh ScrollTrigger khi window load: card đã có aspect-box cố định
+    // nên đo đạc ổn định từ đầu; refresh giữa lúc chuyển trang từng gây treo tab.
     return () => {
-      window.removeEventListener("load", onLoad);
       mm.revert();
     };
   }, [projects]);

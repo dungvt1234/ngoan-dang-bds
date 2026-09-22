@@ -22,17 +22,12 @@ export function LenisProvider({ children }: { children: ReactNode }) {
     // Sync Lenis scroll to GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
+    // Chỉ dùng MỘT vòng raf (gsap.ticker). Vòng requestAnimationFrame riêng
+    // trước đây khiến lenis.raf chạy 2 lần/frame → giật + nguy cơ treo tab.
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
 
     return () => {
       lenis.destroy();
