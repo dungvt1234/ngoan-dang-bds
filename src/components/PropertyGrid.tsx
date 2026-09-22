@@ -38,7 +38,13 @@ export function PropertyGrid({ projects }: { projects: Project[] }) {
 
     mm.add("(min-width: 768px)", () => {
       const getAmount = () =>
-        Math.max(0, track.scrollWidth - window.innerWidth + 120);      const pinRange = () => ({
+        Math.max(0, track.scrollWidth - window.innerWidth + 120);
+      // TẠM TẮT PIN để chẩn đoán treo tab khi chuyển trang (debug 09/2026).
+      // Nếu hết sập → thủ phạm là pin → dựng lại pin kiểu an toàn.
+      const PIN_ENABLED = false;
+      if (!PIN_ENABLED) return;
+
+      const pinRange = () => ({
         trigger: root,
         start: "top top",
         // Kéo dài quãng ghim gấp ~3.2 lần để vuốt hết card mới nhả,
@@ -101,9 +107,25 @@ export function PropertyGrid({ projects }: { projects: Project[] }) {
       };
     });
 
-    // KHÔNG refresh ScrollTrigger khi window load: card đã có aspect-box cố định
-    // nên đo đạc ổn định từ đầu; refresh giữa lúc chuyển trang từng gây treo tab.
+    // Đo lại vị trí ghim sau khi font/ảnh load xong (layout shift làm pin
+    // kích hoạt sớm sai chỗ). Có guard mounted + once để không refresh
+    // giữa lúc chuyển trang (từng gây treo tab).
+    let mounted = true;
+    const refresh = () => {
+      if (mounted) ScrollTrigger.refresh();
+    };
+    if (document.readyState === "complete") {
+      refresh();
+    } else {
+      window.addEventListener("load", refresh, { once: true });
+    }
+    if (document.fonts) {
+      document.fonts.ready.then(refresh).catch(() => {});
+    }
+
     return () => {
+      mounted = false;
+      window.removeEventListener("load", refresh);
       mm.revert();
     };
   }, [projects]);
