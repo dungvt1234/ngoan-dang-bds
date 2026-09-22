@@ -12,7 +12,7 @@ export function HomeAbout() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <Reveal className="lg:col-span-2">
             <div>
-              <p className="type-kicker text-accent-hover mb-4">Về Ngoan</p>
+              <p className="type-kicker text-secondary mb-4">Về Ngoan</p>
               <h2 id="home-about-heading" className="font-display text-primary font-semibold text-[2rem] md:text-[2.75rem] leading-tight mb-6">
                 Đồng hành cùng bạn trên hành trình sở hữu giá trị thật
               </h2>

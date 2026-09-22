@@ -31,7 +31,7 @@ export function HomeKnowledge({ items }: { items: KnowledgeItem[] }) {
       <div className="section-pad">
         <Container>
           <Reveal>
-            <p className="type-kicker text-accent-hover mb-4">Góc phân tích</p>
+            <p className="type-kicker text-secondary mb-4">Góc phân tích</p>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
               <h2 id="home-knowledge-heading" className="font-display text-primary font-semibold text-[2rem] md:text-[2.75rem] leading-tight">
                 Kiến thức &amp; phân tích thị trường
@@ -62,7 +62,7 @@ export function HomeKnowledge({ items }: { items: KnowledgeItem[] }) {
                 )}
               </div>
               <div className="p-6 flex flex-col justify-center">
-                <p className="type-kicker text-accent-hover mb-2">{TYPE_LABELS[first.type] ?? first.type}</p>
+                <p className="type-kicker text-secondary mb-2">{TYPE_LABELS[first.type] ?? first.type}</p>
                 <h3 className="type-h3 text-primary mb-2 group-hover:text-accent-hover transition-colors">
                   {first.title}
                 </h3>

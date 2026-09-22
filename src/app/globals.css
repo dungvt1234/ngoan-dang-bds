@@ -8,16 +8,16 @@
   --font-script: var(--font-script-face), cursive;
 
   /* Semantic colors — component chỉ dùng token, không hard-code HEX. */
-  --color-page: #F8F6F1;        /* bg-page: nền editorial mặc định */
+  --color-page: #FFFFFF;        /* bg-page: trắng tinh */
   --color-clean: #FFFFFF;       /* bg-clean: vùng cần thoáng (bài viết, bảng, form) */
-  --color-muted: #EFEAE2;       /* bg-muted: band listing, filter, quote */
+  --color-muted: #F0F2F5;       /* bg-muted: band listing, filter, quote (xám lạnh) */
   --color-dark: #102A43;        /* bg-dark: deep navy — 1 dark section/page */
   --color-ink: #17202A;         /* bg-ink: charcoal — footer, campaign hero */
 
   --color-primary: #17202A;     /* text-primary: headline, body chính */
   --color-secondary: #486581;   /* text-secondary: mô tả phụ, metadata */
   --color-mute: #667085;        /* text-muted: caption, placeholder, timestamp */
-  --color-ondark: #F8F6F1;      /* text-on-dark: chữ trên navy/charcoal */
+  --color-ondark: #FFFFFF;      /* text-on-dark: chữ trên navy/charcoal */
 
   --color-soft: rgba(16, 42, 67, 0.12); /* border-soft: divider, card border, table */
 
@@ -36,7 +36,7 @@
   --color-charcoal: #17202A;
   --color-bluegray: #486581;
   --color-amber: #C6A15B;
-  --color-glass: rgba(248, 246, 241, 0.72);
+  --color-glass: rgba(255, 255, 255, 0.85);
   --color-glass-border: rgba(255, 255, 255, 0.18);
 }
 

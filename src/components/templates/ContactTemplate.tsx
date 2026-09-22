@@ -23,10 +23,23 @@ export function ContactTemplate() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <Reveal>
           <div>
-            <h2 className="type-h3 mb-4">Kênh liên hệ (placeholder)</h2>
-            <ul className="space-y-2 type-body text-secondary">
-              <li>Điện thoại: đang cập nhật</li>
-              <li>Zalo: đang cập nhật</li>
+            <h2 className="type-h3 mb-4">Kênh liên hệ</h2>
+            <ul className="space-y-3 type-body text-secondary">
+              <li>
+                <a href="tel:+84906477923" className="font-medium text-primary hover:text-accent-hover transition-colors">
+                  Điện thoại/Zalo: 0906 477 923
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.facebook.com/ngoan.dang.739"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-primary hover:text-accent-hover transition-colors"
+                >
+                  Messenger: Ngoan Đặng
+                </a>
+              </li>
             </ul>
           </div>
           </Reveal>

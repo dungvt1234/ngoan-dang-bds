@@ -121,7 +121,7 @@ export function PropertyGrid({ projects }: { projects: Project[] }) {
       {/* Section Header (inside pinned area on desktop) */}
       <div className="mb-12 md:mb-0 md:absolute md:top-10 md:left-12 lg:left-16 md:right-12 lg:right-16 z-20 pr-4 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div className="max-w-none">
-          <p className="type-kicker text-accent-hover mb-4">Dự án nổi bật</p>
+          <p className="type-kicker text-secondary mb-4">Dự án nổi bật</p>
           <h2 id="portfolio-heading" className="font-display text-primary font-semibold text-[1.65rem] md:text-[2.5rem] md:whitespace-nowrap leading-tight">
             Những dự án đang được quan tâm
           </h2>

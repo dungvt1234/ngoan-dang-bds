@@ -21,7 +21,7 @@ export function SectionHeading({
   return (
     <div className={`max-w-[720px] ${alignCls}`}>
       {kicker ? (
-        <p className="type-kicker text-accent mb-4">{kicker}</p>
+        <p className="type-kicker text-secondary mb-4">{kicker}</p>
       ) : null}
       <h2 className={`type-h2 ${titleCls}`}>{title}</h2>
       {lede ? <p className={`type-body ${ledeCls} mt-4`}>{lede}</p> : null}

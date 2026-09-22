@@ -82,8 +82,21 @@ export function SiteFooter() {
             </h2>
             <ul className="space-y-3 text-sm text-ondark/70">
               <li>Vũng Tàu, Việt Nam</li>
-              <li>Điện thoại: đang cập nhật</li>
-              <li>Zalo: đang cập nhật</li>
+              <li>
+                <a href="tel:+84906477923" className="hover:text-ondark transition-colors">
+                  Điện thoại/Zalo: 0906 477 923
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.facebook.com/ngoan.dang.739"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-ondark transition-colors"
+                >
+                  Messenger: Ngoan Đặng
+                </a>
+              </li>
             </ul>
           </div>
         </div>

@@ -34,7 +34,7 @@ export function HomeSegments() {
       <div className="section-pad">
         <Container>
           <Reveal>
-            <p className="type-kicker text-accent-hover mb-4">Lĩnh vực tập trung</p>
+            <p className="type-kicker text-secondary mb-4">Lĩnh vực tập trung</p>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
               <h2 id="segments-heading" className="font-display text-primary font-semibold text-[2rem] md:text-[2.75rem] leading-tight">
                 Các phân khúc Ngoan đang tư vấn
