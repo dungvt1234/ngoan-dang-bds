@@ -26,6 +26,13 @@ const SEGMENTS = [
     image: "/images/stock-vungtau-panorama.jpg",
     alt: "Toàn cảnh Vũng Tàu (ảnh tạm)",
   },
+  {
+    id: "cho-thue",
+    name: "Cho thuê",
+    description: "Khai thác dòng tiền – Vận hành hiệu quả",
+    image: "/images/stock-bds-house.jpg",
+    alt: "Nhà hiện đại minh họa (ảnh tạm)",
+  },
 ];
 
 export function HomeSegments() {
@@ -44,7 +51,7 @@ export function HomeSegments() {
               </Link>
             </div>
           </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {SEGMENTS.map((s, i) => (
               <Reveal key={s.id} delay={i * 120}>
               <Link

@@ -1,12 +1,23 @@
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { FloatingDock } from "@/components/FloatingDock";
+import { getArticlesByType, getFeaturedProjects } from "@/lib/content";
 
 // Layout chung toàn site (trừ campaign): header + main + footer + dock nổi.
-export default function SiteLayout({ children }: { children: React.ReactNode }) {
+// Header nhận lists cho dropdown (query 1 lần ở đây).
+export default async function SiteLayout({ children }: { children: React.ReactNode }) {
+  const [projects, analyses, knowledges] = await Promise.all([
+    getFeaturedProjects(6),
+    getArticlesByType("analysis"),
+    getArticlesByType("knowledge"),
+  ]);
   return (
     <>
-      <SiteHeader />
+      <SiteHeader
+        projects={projects}
+        analyses={analyses.slice(0, 5).map((a) => ({ slug: a.slug, title: a.title }))}
+        knowledges={knowledges.slice(0, 5).map((a) => ({ slug: a.slug, title: a.title }))}
+      />
       <main>{children}</main>
       <SiteFooter />
       <FloatingDock />

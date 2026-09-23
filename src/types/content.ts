@@ -74,6 +74,7 @@ export interface Project extends VersionInfo {
   tags: string[];
   noindex: boolean;
   featured?: boolean;
+  hot_note?: string;
 
   // Location (overview L, còn lại S trừ location_text/developer_track_record)
   overview?: string;

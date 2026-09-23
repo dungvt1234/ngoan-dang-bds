@@ -9,10 +9,14 @@ cover: /images/stock-vungtau-panorama.jpg
 cover_alt: "Toàn cảnh Vũng Tàu minh họa (ảnh tạm)"
 tags: [vung-tau, dau-tu, tien-do]
 noindex: true
+# DEMO 09/2026: field giá/pháp lý/CĐT bịa để test UI — PHẢI kiểm chứng trước public
 featured: true
 author: ngoan-dang
 published_at: 2026-09-21
 updated_at: 2026-09-21
+price_range_text: "Từ 8,5 tỷ/căn"
+developer_name: "Sun Group (demo — cần kiểm chứng)"
+legal_status: dang-hoan-thien
 sources: []
 ---
 

@@ -6,9 +6,9 @@ import { NavLink } from "@/types";
 export const navLinks: NavLink[] = [
   { label: "Trang chủ", href: "/" },
   { label: "Dự án", href: "/du-an" },
-  { label: "Kiến thức", href: "/kien-thuc" },
+  { label: "Kinh nghiệm mua nhà", href: "/kinh-nghiem-mua-nha" },
   { label: "Phân tích", href: "/phan-tich" },
-  { label: "Case Study", href: "/case-study" },
+  { label: "Dịch vụ", href: "/dich-vu" },
   { label: "Tin tức & Sự kiện", href: "/tin-tuc" },
   { label: "Về Ngoan", href: "/ve-ngoan" },
 ];

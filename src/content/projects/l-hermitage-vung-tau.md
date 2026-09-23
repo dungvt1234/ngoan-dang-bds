@@ -9,10 +9,13 @@ cover: /images/stock-bds-villa.jpg
 cover_alt: "Biệt thự nghỉ dưỡng minh họa (ảnh tạm — không phải ảnh dự án)"
 tags: [vung-tau, nghi-duong, dau-tu]
 noindex: true
+# DEMO 09/2026: field giá/pháp lý bịa để test UI — PHẢI kiểm chứng trước public
 featured: true
 author: ngoan-dang
 published_at: 2026-09-21
 updated_at: 2026-09-21
+price_range_text: "Từ 6,7 tỷ/căn"
+legal_status: dang-hoan-thien
 sources: []
 ---
 

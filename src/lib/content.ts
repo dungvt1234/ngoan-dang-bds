@@ -235,6 +235,7 @@ async function parseProjectFile(file: string, raw: string): Promise<Project> {
     // noindex là SEO decision riêng — Tier KHÔNG tự quyết định (spec H).
     noindex: d.noindex === true,
     featured: d.featured === true,
+    hot_note: optionalString(d.hot_note),
     overview: optionalString(d.overview),
     location_text: optionalString(d.location_text),
     location_landmarks: Array.isArray(d.location_landmarks)

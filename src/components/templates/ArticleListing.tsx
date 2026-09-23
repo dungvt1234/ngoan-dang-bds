@@ -15,15 +15,25 @@ const TITLES: Record<ArticleType, { listing: string; kicker: string }> = {
 
 // ArticleListing V1 — 1 template cho 3 loại bài. /so-sanh dùng riêng vì
 // Comparison là model tách biệt (không ép thành Article).
-export function ArticleListing({ type, articles }: { type: ArticleType; articles: Article[] }) {
+export function ArticleListing({
+  type,
+  articles,
+  heading,
+}: {
+  type: ArticleType;
+  articles: Article[];
+  heading?: { kicker: string; title: string };
+}) {
   const meta = TITLES[type];
+  const kicker = heading?.kicker ?? meta.kicker;
+  const title = heading?.title ?? meta.listing;
   return (
     <div className="section-pad">
       <Container>
         <Breadcrumb items={[{ label: "Trang chủ", href: "/" }, { label: meta.listing }]} />
         <div className="mt-8 mb-12">
           <Reveal>
-          <SectionHeading kicker={meta.kicker} title={meta.listing} />
+          <SectionHeading kicker={kicker} title={title} />
           </Reveal>
         </div>
         {articles.length === 0 ? (
@@ -33,7 +43,7 @@ export function ArticleListing({ type, articles }: { type: ArticleType; articles
             {articles.map((a, i) => (
               <li key={a.slug} className="border-b border-soft pb-8">
                 <Reveal delay={Math.min(i, 4) * 80}>
-                <p className="type-kicker text-accent mb-2">{meta.kicker}</p>
+                <p className="type-kicker text-accent mb-2">{kicker}</p>
                 <h2 className="type-h3 mb-2">
                   <Link href={contentPath(a.type, a.slug)} className="hover:text-accent-hover transition-colors">
                     {a.title}

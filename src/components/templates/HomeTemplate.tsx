@@ -1,10 +1,11 @@
 import type { Article, Comparison, Project } from "@/types/content";
-import { HomeHero } from "@/components/home/HomeHero";
+import { HomeProjectHero } from "@/components/home/HomeProjectHero";
 import { HomeTrust } from "@/components/home/HomeTrust";
 import { Marquee } from "@/components/Marquee";
 import { HomeSegments } from "@/components/home/HomeSegments";
 import { PropertyGrid } from "@/components/PropertyGrid";
 import { HomeKnowledge, type KnowledgeItem } from "@/components/home/HomeKnowledge";
+import { HomeNews } from "@/components/home/HomeNews";
 import { HomeAbout } from "@/components/home/HomeAbout";
 import { CTA } from "@/components/CTA";
 
@@ -25,30 +26,21 @@ function toKnowledgeItems(articles: (Article | Comparison)[]): KnowledgeItem[] {
 export function HomeTemplate({
   projects,
   articles,
+  news,
 }: {
   projects: Project[];
   articles: (Article | Comparison)[];
+  news: Article[];
 }) {
   return (
     <>
-      <HomeHero
-        kicker="Ngoan Đặng — BĐS dự án Vũng Tàu"
-        headline="Đọc vị dự án trước khi bạn xuống tiền."
-        subline="Căn hộ nghỉ dưỡng · Căn hộ để ở · Khu đô thị"
-        supporting={["Thông tin thật.", "Phân tích độc lập.", "Quyết định có cơ sở."]}
-        primaryCta={{ label: "Xem dự án đang phân tích", href: "/du-an" }}
-        secondaryCta={{ label: "Vì sao tin Ngoan?", href: "/ve-ngoan" }}
-        image={{
-          src: "/images/stock-hero-villa.jpg",
-          alt: "Biệt thự hiện đại lên đèn lúc chạng vạng (ảnh tạm)",
-          credit: "Ảnh minh họa tạm (Unsplash License)",
-        }}
-      />
+      <HomeProjectHero projects={projects} />
       <HomeTrust />
       <Marquee />
       <HomeSegments />
       <PropertyGrid projects={projects} />
       <HomeKnowledge items={toKnowledgeItems(articles)} />
+      <HomeNews items={news} />
       <HomeAbout />
       <CTA />
     </>
