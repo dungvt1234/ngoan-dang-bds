@@ -18,6 +18,9 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         analyses={analyses.slice(0, 5).map((a) => ({ slug: a.slug, title: a.title }))}
         knowledges={knowledges.slice(0, 5).map((a) => ({ slug: a.slug, title: a.title }))}
       />
+      {/* Đệm chiều cao header fixed — nếu không, breadcrumb/hero trên
+          mobile bị header đè (section-pad mobile chỉ 64px < cao header). */}
+      <div aria-hidden="true" className="h-[72px] md:h-[76px]" />
       <main>{children}</main>
       <SiteFooter />
       <FloatingDock />

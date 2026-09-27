@@ -38,7 +38,7 @@ export function HomeProjectHero({ projects }: { projects: Project[] }) {
       <section
         aria-labelledby="project-hero-heading"
         aria-roledescription="carousel"
-        className="relative bg-page text-primary pt-24 md:pt-28 pb-6 md:pb-8"
+        className="relative bg-page text-primary pt-6 md:pt-8 pb-6 md:pb-8"
       >
         <Container>
           <div
