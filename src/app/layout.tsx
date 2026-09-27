@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Be_Vietnam_Pro, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { LenisProvider } from "@/components/LenisProvider";
@@ -26,6 +26,12 @@ const script = Dancing_Script({
   weight: ["500", "600", "700"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#17202A",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://ngoandang.vn"),

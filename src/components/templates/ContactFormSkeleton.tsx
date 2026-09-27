@@ -80,7 +80,7 @@ export function ContactFormSkeleton() {
             onChange={(e) => setName(e.target.value)}
             placeholder="Tên của bạn"
             autoComplete="name"
-            className="w-full min-h-[48px] bg-page border border-soft rounded-xl px-4 type-small text-primary placeholder:text-muted focus:outline-none"
+            className="w-full min-h-[48px] bg-page border border-soft rounded-xl px-4 text-base text-primary placeholder:text-muted focus:outline-none"
           />
         </label>
         <label className="block">
@@ -91,7 +91,7 @@ export function ContactFormSkeleton() {
             onChange={(e) => setPhone(e.target.value)}
             placeholder="VD: 0901234567"
             autoComplete="tel"
-            className="w-full min-h-[48px] bg-page border border-soft rounded-xl px-4 type-small text-primary placeholder:text-muted focus:outline-none"
+            className="w-full min-h-[48px] bg-page border border-soft rounded-xl px-4 text-base text-primary placeholder:text-muted focus:outline-none"
           />
         </label>
         <label className="block">
@@ -101,7 +101,7 @@ export function ContactFormSkeleton() {
             value={need}
             onChange={(e) => setNeed(e.target.value)}
             placeholder="VD: tìm căn hộ để ở tại Vũng Tàu"
-            className="w-full min-h-[48px] bg-page border border-soft rounded-xl px-4 type-small text-primary placeholder:text-muted focus:outline-none"
+            className="w-full min-h-[48px] bg-page border border-soft rounded-xl px-4 text-base text-primary placeholder:text-muted focus:outline-none"
           />
         </label>
       </div>

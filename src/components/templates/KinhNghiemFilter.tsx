@@ -98,7 +98,7 @@ export function KinhNghiemFilter({ articles }: { articles: Article[] }) {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Pháp lý, giá/m², vay mua nhà... (gõ không dấu vẫn ra)"
             aria-label="Tìm bài viết kinh nghiệm mua nhà"
-            className="type-small min-h-[48px] w-full rounded-xl border border-soft bg-clean px-4 text-primary placeholder:text-secondary focus:outline-none"
+            className="min-h-[48px] w-full rounded-xl border border-soft bg-clean px-4 text-base text-primary placeholder:text-secondary focus:outline-none"
           />
         </label>
         <div className="flex flex-wrap items-center gap-2">

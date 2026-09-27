@@ -99,7 +99,7 @@ export function ProjectFilter({ projects }: { projects: Project[] }) {
             }}
             placeholder="Tên dự án, khu vực... (gõ không dấu vẫn ra)"
             aria-label="Tìm kiếm dự án"
-            className="w-full min-h-[48px] rounded-xl border border-soft bg-clean px-4 type-small text-primary placeholder:text-secondary focus:outline-none"
+            className="w-full min-h-[48px] rounded-xl border border-soft bg-clean px-4 text-base text-primary placeholder:text-secondary focus:outline-none"
           />
         </label>
         <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between pb-8 border-b border-soft">

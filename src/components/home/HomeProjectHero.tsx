@@ -126,7 +126,7 @@ export function HomeProjectHero({ projects }: { projects: Project[] }) {
                 >
                   ›
                 </button>
-                <div className="flex gap-2 ml-2" role="tablist" aria-label="Chọn dự án">
+                <div className="flex gap-1 ml-2" role="tablist" aria-label="Chọn dự án">
                   {items.map((item, i) => (
                     <button
                       key={item.slug}
@@ -135,10 +135,15 @@ export function HomeProjectHero({ projects }: { projects: Project[] }) {
                       aria-selected={i === index}
                       aria-label={`Xem ${item.name}`}
                       onClick={() => goTo(i)}
-                      className={`h-1 rounded-full transition-all duration-500 ${
-                        i === index ? "w-8 bg-accent" : "w-4 bg-primary/20 hover:bg-primary/40"
-                      }`}
-                    />
+                      className="flex min-h-[44px] min-w-[44px] items-center justify-center"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={`h-1 rounded-full transition-all duration-500 ${
+                          i === index ? "w-8 bg-accent" : "w-4 bg-primary/20"
+                        }`}
+                      />
+                    </button>
                   ))}
                 </div>
               </div>
