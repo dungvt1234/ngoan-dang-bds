@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getArticlesByType } from "@/lib/content";
-import { ArticleListing } from "@/components/templates/ArticleListing";
+import { TinTucListing } from "@/components/templates/TinTucListing";
 
 export const metadata: Metadata = {
   title: "Tin tức & Sự kiện",
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 
 export default async function TinTucPage() {
   const articles = await getArticlesByType("tin-tuc");
-  return <ArticleListing type="tin-tuc" articles={articles} />;
+  return <TinTucListing articles={articles} />;
 }
