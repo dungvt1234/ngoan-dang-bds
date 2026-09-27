@@ -10,20 +10,58 @@ const FIELDS = [
   {
     title: "Căn hộ nghỉ dưỡng",
     desc: "Đầu tư giá trị — trải nghiệm khác biệt tại Vũng Tàu.",
+    icon: "sea",
   },
   {
     title: "Căn hộ để ở",
     desc: "Không gian sống — giá trị bền vững cho gia đình.",
+    icon: "home",
   },
   {
     title: "Khu đô thị",
     desc: "Hạ tầng đồng bộ — tiềm năng dài hạn.",
+    icon: "city",
   },
   {
     title: "Cho thuê",
     desc: "Khai thác dòng tiền — vận hành hiệu quả.",
+    icon: "key",
   },
-];
+] as const;
+
+function FieldIcon({ icon }: { icon: (typeof FIELDS)[number]["icon"] }) {
+  const cls = "w-7 h-7 text-accent-hover";
+  if (icon === "sea")
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={cls} aria-hidden="true">
+        <circle cx="17" cy="6" r="2.5" />
+        <path d="M2 15.5c2 0 2 1.5 4 1.5s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5 2 1.5 4 1.5" strokeLinecap="round" />
+        <path d="M2 20c2 0 2 1.5 4 1.5s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5 2 1.5 4 1.5" strokeLinecap="round" />
+      </svg>
+    );
+  if (icon === "home")
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={cls} aria-hidden="true">
+        <path d="M3 11l9-7 9 7" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M5 9.5V20h14V9.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M10 20v-5h4v5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  if (icon === "city")
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={cls} aria-hidden="true">
+        <path d="M3 21h18" strokeLinecap="round" />
+        <path d="M5 21V9h5v12M10 21V4h9v17" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M12.5 7h1M12.5 10h1M15.5 7h1M15.5 10h1" strokeLinecap="round" />
+      </svg>
+    );
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={cls} aria-hidden="true">
+      <circle cx="8" cy="8" r="4" />
+      <path d="M11 11L20 20M15.5 15.5L18 13M13 13l2.5-2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 const METHOD = [
   {
@@ -144,9 +182,9 @@ export function AboutTemplate() {
               {FIELDS.map((f, i) => (
                 <Reveal key={f.title} delay={Math.min(i, 3) * 80}>
                   <div className="h-full rounded-2xl border border-soft bg-page p-6">
-                    <p className="font-display text-4xl text-accent mb-3" aria-hidden="true">
-                      {String(i + 1).padStart(2, "0")}
-                    </p>
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
+                      <FieldIcon icon={f.icon} />
+                    </div>
                     <h3 className="font-medium text-primary text-lg mb-2">{f.title}</h3>
                     <p className="type-small text-secondary">{f.desc}</p>
                   </div>
