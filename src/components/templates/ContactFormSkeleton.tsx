@@ -13,6 +13,8 @@ function isValidVNPhone(v: string): boolean {
   return /^(0|\+84)(3|5|7|8|9)\d{8}$/.test(digits);
 }
 
+const NEEDS = ["Mua để ở", "Đầu tư", "Nghỉ dưỡng", "Cho thuê", "Tìm hiểu trước"];
+
 export function ContactFormSkeleton() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -71,6 +73,7 @@ export function ContactFormSkeleton() {
       onSubmit={submit}
       noValidate
     >
+      <h2 className="type-h3 text-primary mb-5">Để lại thông tin — 30 giây</h2>
       <div className="space-y-4 mb-6">
         <label className="block">
           <span className="type-small text-secondary block mb-2">Họ tên *</span>
@@ -94,16 +97,39 @@ export function ContactFormSkeleton() {
             className="w-full min-h-[48px] bg-page border border-soft rounded-xl px-4 text-base text-primary placeholder:text-muted focus:outline-none"
           />
         </label>
-        <label className="block">
-          <span className="type-small text-secondary block mb-2">Nhu cầu</span>
+        <div>
+          <span id="need-label" className="type-small text-secondary block mb-2">
+            Nhu cầu của bạn
+          </span>
+          <div role="group" aria-labelledby="need-label" className="flex flex-wrap gap-2 mb-3">
+            {NEEDS.map((n) => {
+              const active = need === n;
+              return (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setNeed(n)}
+                  aria-pressed={active}
+                  className={`min-h-[40px] rounded-full border px-4 text-sm font-medium transition-colors ${
+                    active
+                      ? "border-ink bg-ink text-ondark"
+                      : "border-soft bg-page text-secondary hover:border-primary"
+                  }`}
+                >
+                  {n}
+                </button>
+              );
+            })}
+          </div>
           <input
             type="text"
             value={need}
             onChange={(e) => setNeed(e.target.value)}
-            placeholder="VD: tìm căn hộ để ở tại Vũng Tàu"
+            placeholder="Chi tiết thêm (VD: căn 2PN tầm 3 tỷ)"
+            aria-label="Chi tiết nhu cầu"
             className="w-full min-h-[48px] bg-page border border-soft rounded-xl px-4 text-base text-primary placeholder:text-muted focus:outline-none"
           />
-        </label>
+        </div>
       </div>
       {error && (
         <p role="alert" className="type-small font-medium text-risk mb-4">
