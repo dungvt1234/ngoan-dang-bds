@@ -110,7 +110,7 @@ export function ContactFormSkeleton() {
                   type="button"
                   onClick={() => setNeed(n)}
                   aria-pressed={active}
-                  className={`min-h-[40px] rounded-full border px-4 text-sm font-medium transition-colors ${
+                  className={`min-h-[44px] rounded-full border px-4 text-sm font-medium transition-colors ${
                     active
                       ? "border-ink bg-ink text-ondark"
                       : "border-soft bg-page text-secondary hover:border-primary"

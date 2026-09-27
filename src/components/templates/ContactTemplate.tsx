@@ -99,7 +99,7 @@ export function ContactTemplate() {
                 <span aria-hidden="true" className="inline-block h-px w-8 bg-accent" />
                 Liên hệ
               </p>
-              <h1 className="font-display text-primary font-semibold text-[2.5rem] leading-tight mb-4 md:text-[3.25rem]">
+              <h1 className="font-display text-primary font-semibold leading-tight mb-4 text-[2rem] md:text-[3.25rem]">
                 Nói chuyện với Ngoan
               </h1>
               <p className="type-body text-secondary">
@@ -109,22 +109,24 @@ export function ContactTemplate() {
             </div>
           </Reveal>
 
-          <div className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="mb-10 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
             {CHANNELS.map((c, i) => (
               <Reveal key={c.title} delay={i * 80}>
                 <a
                   href={c.href}
                   {...(c.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="group flex h-full flex-col rounded-2xl border border-soft bg-clean p-6 transition-shadow hover:shadow-lg"
+                  className="group flex h-full items-center gap-4 rounded-2xl border border-soft bg-clean p-4 transition-shadow hover:shadow-lg sm:flex-col sm:items-start sm:p-6"
                 >
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent/10 sm:h-12 sm:w-12">
                     <ChannelIcon icon={c.icon} />
                   </div>
-                  <p className="type-kicker text-secondary mb-1">{c.title}</p>
-                  <p className="text-xl font-semibold text-primary transition-colors group-hover:text-accent-hover">
-                    {c.value}
-                  </p>
-                  <p className="type-small text-secondary mt-2">{c.desc}</p>
+                  <div className="min-w-0">
+                    <p className="type-kicker text-secondary mb-0.5">{c.title}</p>
+                    <p className="text-lg font-semibold text-primary transition-colors group-hover:text-accent-hover sm:text-xl">
+                      {c.value}
+                    </p>
+                    <p className="type-small text-secondary mt-1">{c.desc}</p>
+                  </div>
                 </a>
               </Reveal>
             ))}
