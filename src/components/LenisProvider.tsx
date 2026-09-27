@@ -24,14 +24,38 @@ export function LenisProvider({ children }: { children: ReactNode }) {
 
     // Chỉ dùng MỘT vòng raf (gsap.ticker). Vòng requestAnimationFrame riêng
     // trước đây khiến lenis.raf chạy 2 lần/frame → giật + nguy cơ treo tab.
-    gsap.ticker.add((time) => {
+    // Giữ đúng ref để cleanup gỡ chính nó (trước đây gỡ nhầm hàm khác
+    // khiến raf rò rỉ, nhiều vòng raf đánh nhau → kẹt/giật khi chuyển trang).
+    const raf = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    // Anchor cùng trang (#id): để Lenis cuộn tới thay vì nhảy native —
+    // nhảy native lệch khỏi trạng thái Lenis đang giữ → cảm giác kẹt/đứng.
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement).closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+      if (!a) return;
+      const hash = a.getAttribute("href");
+      if (!hash || hash.length < 2) return;
+      const el = document.querySelector(hash);
+      if (!el) return;
+      e.preventDefault();
+      lenis.scrollTo(el as HTMLElement, { offset: -72, duration: 1.1 });
+      history.replaceState(null, "", hash);
+    };
+    document.addEventListener("click", onClick);
+
+    // Ảnh/font về muộn đổi chiều cao trang → refresh trigger cho chắc.
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
+
     return () => {
+      document.removeEventListener("click", onClick);
+      window.removeEventListener("load", onLoad);
+      gsap.ticker.remove(raf);
       lenis.destroy();
-      gsap.ticker.remove(ScrollTrigger.update);
     };
   }, []);
 

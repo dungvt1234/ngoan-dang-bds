@@ -15,7 +15,9 @@ export function Preloader({ brand, sub }: { brand: string; sub: string }) {
         dismiss();
         return;
       }
-      const onLoad = () => window.setTimeout(dismiss, 3000);
+      // Gỡ nhanh khi load xong (giữ 800ms cho mượt) + chốt an toàn 6s.
+      // Trước đây chờ load+3s khiến người mạng chậm tưởng trang bị kẹt.
+      const onLoad = () => window.setTimeout(dismiss, 800);
       if (document.readyState === "complete") onLoad();
       else window.addEventListener("load", onLoad);
       const safety = window.setTimeout(dismiss, 6000);

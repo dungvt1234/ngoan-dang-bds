@@ -56,8 +56,25 @@
   box-sizing: border-box;
 }
 
+/* KHÔNG dùng scroll-behavior: smooth ở đây — xung đột trực tiếp với Lenis
+   (đánh nhau khi cuộn → giật/kẹt trang). Mượt mà do Lenis đảm nhận. */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
+}
+
+/* CSS khuyến nghị của Lenis: native scroll cho vùng prevent, khóa khi stopped. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
