@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Be_Vietnam_Pro, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { LenisProvider } from "@/components/LenisProvider";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 
 // Serif editorial cho Display/H1/H2 — có subset Vietnamese đầy đủ.
 const display = Playfair_Display({
@@ -27,9 +28,24 @@ const script = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Ngoan Đặng — BĐS dự án Vũng Tàu",
-  description:
-    "Ngoan Đặng — thông tin và phân tích độc lập về căn hộ nghỉ dưỡng, căn hộ để ở và khu đô thị tại Vũng Tàu.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://ngoandang.vn"),
+  title: {
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    locale: "vi_VN",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
